@@ -21,6 +21,17 @@ export class UsersService {
   }
 
   /**
+   * find a user by email.
+   *
+   * @param email email.
+   */
+  findByEmail(email: User['email']): Promise<User> {
+    return this.usersRepo.findOneOrFail({
+      email,
+    })
+  }
+
+  /**
    * returns user public data.
    *
    * @param user user.
