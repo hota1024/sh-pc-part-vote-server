@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
+import { UserCreateDto } from './user.dto'
 import { User } from './user.entity'
 
 /**
@@ -29,6 +30,17 @@ export class UsersService {
     return this.usersRepo.findOneOrFail({
       email,
     })
+  }
+
+  /**
+   * create a user by given data.
+   *
+   * @param data data.
+   */
+  create(data: UserCreateDto): Promise<User> {
+    const user = this.usersRepo.create(data)
+
+    return this.usersRepo.save(user)
   }
 
   /**
