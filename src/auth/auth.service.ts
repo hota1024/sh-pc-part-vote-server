@@ -32,7 +32,9 @@ export class AuthService {
    *
    * @param credentials credentials.
    */
-  login(credentials: LoginDto): string {
-    return this.jwtService.sign(credentials)
+  async login(credentials: LoginDto): Promise<string> {
+    const user = await this.usersService.findByEmail(credentials.email)
+
+    return this.jwtService.sign(user)
   }
 }

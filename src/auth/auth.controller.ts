@@ -16,9 +16,11 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  login(@Body() credentials: LoginDto): LoginRes {
+  async login(@Body() credentials: LoginDto): Promise<LoginRes> {
+    const token = await this.auth.login(credentials)
+
     return {
-      token: this.auth.login(credentials),
+      token,
     }
   }
 }
