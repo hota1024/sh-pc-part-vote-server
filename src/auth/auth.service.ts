@@ -3,7 +3,5 @@ import { UsersService } from 'src/users/users.service'
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {
-    console.log(this.usersService)
-  }
+  private readonly usersService: UsersService
 }
