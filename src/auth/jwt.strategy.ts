@@ -8,9 +8,9 @@ import { UserPublic } from 'src/users/users.service'
 export type JwtPayload = UserPublic
 
 /**
- * document
+ * JwtStrategy class.
  */
-export class JetStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
       jwtFormRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
