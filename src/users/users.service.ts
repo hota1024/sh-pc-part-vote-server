@@ -14,7 +14,7 @@ export type UserVoteStatus = Record<PartType, Part | undefined>
 /**
  * UserPublic type.
  */
-export type UserPublic = Omit<User, 'passwordHash'> & {
+export type UserPublic = Omit<User, 'passwordHash' | 'parts'> & {
   status: UserVoteStatus
 }
 
@@ -85,7 +85,7 @@ export class UsersService {
    */
   toPublic(user: User): UserPublic {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { passwordHash, ...base } = user
+    const { passwordHash, parts, ...base } = user
 
     const cpu = user.parts?.find(({ type }) => type === 'cpu')
     const motherboard = user.parts?.find(({ type }) => type === 'motherboard')
