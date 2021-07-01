@@ -86,15 +86,15 @@ export class PartsService {
   async voteStatus(): Promise<VoteStatus> {
     const parts = await this.partsRepo.find({ relations: ['users'] })
 
-    const cpu = parts.filter(({ type }) => type === 'cpu').length
-    const motherboard = parts.filter(({ type }) => type === 'cpu').length
-    const cpuCooler = parts.filter(({ type }) => type === 'cpu').length
-    const pcCase = parts.filter(({ type }) => type === 'cpu').length
-    const pcCooler = parts.filter(({ type }) => type === 'cpu').length
-    const gpu = parts.filter(({ type }) => type === 'cpu').length
-    const rom = parts.filter(({ type }) => type === 'cpu').length
-    const ram = parts.filter(({ type }) => type === 'cpu').length
-    const powerSupply = parts.filter(({ type }) => type === 'cpu').length
+    const cpu = this.aggregatePartsVote(parts, 'cpu')
+    const motherboard = this.aggregatePartsVote(parts, 'motherboard')
+    const cpuCooler = this.aggregatePartsVote(parts, 'cpu-cooler')
+    const pcCase = this.aggregatePartsVote(parts, 'pc-case')
+    const pcCooler = this.aggregatePartsVote(parts, 'pc-cooler')
+    const gpu = this.aggregatePartsVote(parts, 'gpu')
+    const rom = this.aggregatePartsVote(parts, 'rom')
+    const ram = this.aggregatePartsVote(parts, 'ram')
+    const powerSupply = this.aggregatePartsVote(parts, 'power-supply')
     const all =
       cpu +
       motherboard +
@@ -134,5 +134,12 @@ export class PartsService {
       type: part.type,
       votes: part.users?.length ?? 0,
     }
+  }
+
+  private aggregatePartsVote(parts: Part[], type: PartType): number {
+    return parts
+      .filter(({ type: t }) => t === type)
+      .map(({ users }) => users.length)
+      .reduce((v, i) => v + i, 0)
   }
 }
