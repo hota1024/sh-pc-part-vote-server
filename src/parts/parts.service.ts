@@ -99,6 +99,16 @@ export class PartsService {
     return this.usersService.toPublic(user)
   }
 
+  async deleteVote(userId: string, partId: string): Promise<UserPublic> {
+    let user = await this.usersRepo.findOne(userId, { relations: ['parts'] })
+
+    user.parts = user.parts.filter(({ id }) => id !== partId)
+
+    user = await this.usersRepo.save(user)
+
+    return this.usersService.toPublic(user)
+  }
+
   /**
    * returns vote status.
    */
