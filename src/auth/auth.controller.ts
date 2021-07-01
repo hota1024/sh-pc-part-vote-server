@@ -2,7 +2,7 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { UserCreateDto } from 'src/users/user.dto'
 import { User } from 'src/users/user.entity'
-import { UsersService } from 'src/users/users.service'
+import { UserPublic, UsersService } from 'src/users/users.service'
 import { LoginDto } from './auth.dto'
 import { AuthService } from './auth.service'
 
@@ -17,7 +17,7 @@ export type LoginRes = {
  * RegisterRes type.
  */
 export type RegisterRes = {
-  user: User
+  user: UserPublic
   token: string
 }
 
@@ -44,7 +44,7 @@ export class AuthController {
     const token = await this.auth.login(data)
 
     return {
-      user,
+      user: this.users.toPublic(user),
       token,
     }
   }
