@@ -1,5 +1,8 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
+import { UserCreateDto } from 'src/users/user.dto'
+import { User } from 'src/users/user.entity'
+import { UsersService } from 'src/users/users.service'
 import { LoginDto } from './auth.dto'
 import { AuthService } from './auth.service'
 
@@ -10,9 +13,20 @@ export type LoginRes = {
   token: string
 }
 
+/**
+ * RegisterRes type.
+ */
+export type RegisterRes = {
+  user: User
+  token: string
+}
+
 @Controller('auth')
 export class AuthController {
-  private readonly auth: AuthService
+  constructor(
+    private readonly auth: AuthService,
+    private readonly users: UsersService
+  ) {}
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
@@ -20,6 +34,17 @@ export class AuthController {
     const token = await this.auth.login(credentials)
 
     return {
+      token,
+    }
+  }
+
+  @Post('register')
+  async register(@Body() data: UserCreateDto): Promise<RegisterRes> {
+    const user = await this.users.create(data)
+    const token = await this.auth.login(data)
+
+    return {
+      user,
       token,
     }
   }
