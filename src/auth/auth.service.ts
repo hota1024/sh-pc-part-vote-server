@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt'
 import { Injectable } from '@nestjs/common'
 import { User } from 'src/users/user.entity'
 import { UserPublic, UsersService } from 'src/users/users.service'
@@ -24,8 +24,12 @@ export class AuthService {
   ): Promise<UserPublic | void> {
     const user = await this.usersService.findByEmail(email)
 
-    if (user && bcrypt.compareSync(password, user.passwordHash)) {
-      return this.usersService.toPublic(user)
+    if (user) {
+      const isPasswordValid = bcrypt.compareSync(password, user.passwordHash)
+
+      if (isPasswordValid) {
+        return this.usersService.toPublic(user)
+      }
     }
   }
 
