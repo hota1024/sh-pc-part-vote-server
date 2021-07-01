@@ -30,6 +30,15 @@ export class PartsService {
   }
 
   /**
+   * delete part by given id.
+   *
+   * @param id id.
+   */
+  async delete(id: string): Promise<void> {
+    await this.partsRepo.delete({ id })
+  }
+
+  /**
    * returns all public parts.
    */
   async listPublicParts(): Promise<PartPublic[]> {
