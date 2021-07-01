@@ -13,24 +13,24 @@ import {
 export type PartType =
   | 'cpu'
   | 'motherboard'
-  | 'cpu-cooler'
-  | 'pc-case'
-  | 'pc-cooler'
+  | 'cpuCooler'
+  | 'pcCase'
+  | 'pcCooler'
   | 'gpu'
   | 'rom'
   | 'ram'
-  | 'power-supply'
+  | 'powerSupply'
 
 export const PartTypes = [
   'cpu',
   'motherboard',
-  'cpu-cooler',
-  'pc-case',
-  'pc-cooler',
+  'cpuCooler',
+  'pcCase',
+  'pcCooler',
   'gpu',
   'rom',
   'ram',
-  'power-supply',
+  'powerSupply',
 ]
 
 /**
