@@ -82,4 +82,13 @@ export class PartsController {
   ): Promise<UserPublic> {
     return this.parts.setVote(req.user.id, id)
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':id/vote')
+  unvote(
+    @Request() req: { user: UserPublic },
+    @Param('id') id: string
+  ): Promise<UserPublic> {
+    return this.parts.deleteVote(req.user.id, id)
+  }
 }
