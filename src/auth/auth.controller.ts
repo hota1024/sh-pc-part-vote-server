@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { UserCreateDto } from 'src/users/user.dto'
 import { User } from 'src/users/user.entity'
@@ -47,5 +47,11 @@ export class AuthController {
       user: this.users.toPublic(user),
       token,
     }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('me')
+  me(@Request() req: { user: UserPublic }): UserPublic {
+    return req.user
   }
 }
