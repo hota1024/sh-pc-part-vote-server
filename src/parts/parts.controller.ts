@@ -8,7 +8,11 @@ import {
   Param,
   Post,
   UnauthorizedException,
+  UseGuards,
+  Request,
 } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
+import { UserPublic } from 'src/users/users.service'
 import { PartCreateDto } from './part.dto'
 import { Part, PartType, PartTypes } from './part.entity'
 import { PartPublic, PartsService, VoteStatus } from './parts.service'
@@ -68,5 +72,14 @@ export class PartsController {
     if (authorization !== process.env.ADMIN_KEY) {
       throw new UnauthorizedException()
     }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':id/vote')
+  vote(
+    @Request() req: { user: UserPublic },
+    @Param('id') id: string
+  ): Promise<UserPublic> {
+    return this.parts.setVote(req.user.id, id)
   }
 }
