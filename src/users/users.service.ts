@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { UserCreateDto } from './user.dto'
 import { User } from './user.entity'
+import { InjectRepository } from '@nestjs/typeorm'
 
 /**
  * UserPublic type.
@@ -11,6 +12,7 @@ export type UserPublic = Omit<User, 'passwordHash'>
 
 @Injectable()
 export class UsersService {
+  @InjectRepository(User)
   private readonly usersRepo: Repository<User>
 
   /**
