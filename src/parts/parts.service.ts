@@ -14,6 +14,22 @@ export type PartPublic = {
   votes: number
 }
 
+/**
+ * VoteStatus type.
+ */
+export type VoteStatus = {
+  all: number
+  cpu: number
+  motherboard: number
+  cpuCooler: number
+  pcCase: number
+  pcCooler: number
+  gpu: number
+  rom: number
+  ram: number
+  powerSupply: number
+}
+
 @Injectable()
 export class PartsService {
   @InjectRepository(Part)
@@ -62,6 +78,48 @@ export class PartsService {
     })
 
     return parts.map(this.toPublic)
+  }
+
+  /**
+   * returns vote status.
+   */
+  async voteStatus(): Promise<VoteStatus> {
+    const parts = await this.partsRepo.find({ relations: ['users'] })
+
+    const cpu = parts.filter(({ type }) => type === 'cpu').length
+    const motherboard = parts.filter(({ type }) => type === 'cpu').length
+    const cpuCooler = parts.filter(({ type }) => type === 'cpu').length
+    const pcCase = parts.filter(({ type }) => type === 'cpu').length
+    const pcCooler = parts.filter(({ type }) => type === 'cpu').length
+    const gpu = parts.filter(({ type }) => type === 'cpu').length
+    const rom = parts.filter(({ type }) => type === 'cpu').length
+    const ram = parts.filter(({ type }) => type === 'cpu').length
+    const powerSupply = parts.filter(({ type }) => type === 'cpu').length
+    const all =
+      cpu +
+      motherboard +
+      cpuCooler +
+      pcCase +
+      pcCooler +
+      gpu +
+      rom +
+      ram +
+      powerSupply
+
+    const status: VoteStatus = {
+      all,
+      cpu,
+      motherboard,
+      cpuCooler,
+      pcCase,
+      pcCooler,
+      gpu,
+      rom,
+      ram,
+      powerSupply,
+    }
+
+    return status
   }
 
   /**
