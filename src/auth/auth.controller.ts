@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { UserCreateDto } from 'src/users/user.dto'
-import { User } from 'src/users/user.entity'
 import { UserPublic, UsersService } from 'src/users/users.service'
 import { LoginDto } from './auth.dto'
 import { AuthService } from './auth.service'
@@ -51,7 +50,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
-  me(@Request() req: { user: UserPublic }): UserPublic {
-    return req.user
+  me(@Request() req: { user: UserPublic }): Promise<UserPublic> {
+    return this.users.findById(req.user.id).then(this.users.toPublic)
   }
 }
