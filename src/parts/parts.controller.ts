@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common'
 import { PartCreateDto } from './part.dto'
 import { Part, PartType, PartTypes } from './part.entity'
-import { PartPublic, PartsService } from './parts.service'
+import { PartPublic, PartsService, VoteStatus } from './parts.service'
 
 @Controller('parts')
 export class PartsController {
@@ -43,6 +43,11 @@ export class PartsController {
     this.checkAuthorization(authorization)
 
     return this.parts.create(data)
+  }
+
+  @Get('status')
+  status(): Promise<VoteStatus> {
+    return this.parts.voteStatus()
   }
 
   @Delete(':id')
