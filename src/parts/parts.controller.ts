@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Headers,
+  Param,
   Post,
   UnauthorizedException,
 } from '@nestjs/common'
@@ -24,6 +26,22 @@ export class PartsController {
     @Body() data: PartCreateDto,
     @Headers('Authorization') authorization?: string
   ): Promise<Part> {
+    this.checkAuthorization(authorization)
+
+    return this.parts.create(data)
+  }
+
+  @Delete(':id')
+  delete(
+    @Param('id') id: string,
+    @Headers('Authorization') authorization?: string
+  ): Promise<void> {
+    this.checkAuthorization(authorization)
+
+    return this.parts.delete(id)
+  }
+
+  private checkAuthorization(authorization?: string) {
     if (!authorization) {
       throw new UnauthorizedException()
     }
@@ -31,7 +49,5 @@ export class PartsController {
     if (authorization !== process.env.ADMIN_KEY) {
       throw new UnauthorizedException()
     }
-
-    return this.parts.create(data)
   }
 }
