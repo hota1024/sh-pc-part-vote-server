@@ -21,6 +21,18 @@ export type PartType =
   | 'ram'
   | 'power-supply'
 
+export const PartTypes = [
+  'cpu',
+  'motherboard',
+  'cpu-cooler',
+  'pc-case',
+  'pc-cooler',
+  'gpu',
+  'rom',
+  'ram',
+  'power-supply',
+]
+
 /**
  * Part entity.
  */
