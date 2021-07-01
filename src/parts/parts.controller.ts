@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,7 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { PartCreateDto } from './part.dto'
-import { Part } from './part.entity'
+import { Part, PartType, PartTypes } from './part.entity'
 import { PartPublic, PartsService } from './parts.service'
 
 @Controller('parts')
@@ -19,6 +20,19 @@ export class PartsController {
   @Get()
   listPublic(): Promise<PartPublic[]> {
     return this.parts.listPublicParts()
+  }
+
+  @Get('/typed/:type')
+  listTypedPublic(@Param('type') type: PartType): Promise<PartPublic[]> {
+    if (!PartTypes.includes(type)) {
+      throw new BadRequestException({
+        message: `パーツのタイプは ${PartTypes.join(
+          ','
+        )} のいずれかで指定してください。`,
+      })
+    }
+
+    return this.parts.listTypedPublic(type)
   }
 
   @Post()
