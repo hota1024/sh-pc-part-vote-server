@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Part } from 'src/parts/part.entity'
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 /**
  * User entity.
@@ -22,4 +23,10 @@ export class User {
    */
   @Column()
   passwordHash: string
+
+  /**
+   * parts voted by user.
+   */
+  @ManyToMany(() => Part, ({ users }) => users)
+  parts: Part[]
 }
