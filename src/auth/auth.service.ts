@@ -7,8 +7,10 @@ import { LoginDto } from './auth.dto'
 
 @Injectable()
 export class AuthService {
-  private readonly usersService: UsersService
-  private readonly jwtService: JwtService
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
+  ) {}
 
   /**
    * validate credentials and returns the user public.
