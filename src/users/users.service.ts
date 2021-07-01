@@ -44,6 +44,17 @@ export class UsersService {
   }
 
   /**
+   * validate the given email by checking it was already used.
+   *
+   * @param email email.
+   */
+  async validateEmail(email: string): Promise<boolean> {
+    const user = await this.usersRepo.findOne({ email })
+
+    return !!user
+  }
+
+  /**
    * returns user public data.
    *
    * @param user user.
