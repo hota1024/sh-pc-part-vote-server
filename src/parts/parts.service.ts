@@ -49,6 +49,22 @@ export class PartsService {
   }
 
   /**
+   * returns parts of the specified type.
+   *
+   * @param type type.
+   */
+  async listTypedPublic(type: PartType): Promise<PartPublic[]> {
+    const parts = await this.partsRepo.find({
+      where: {
+        type,
+      },
+      relations: ['users'],
+    })
+
+    return parts.map(this.toPublic)
+  }
+
+  /**
    * returns part public.
    *
    * @param part part.
