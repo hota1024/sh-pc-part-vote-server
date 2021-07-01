@@ -4,11 +4,19 @@ import { Repository } from 'typeorm'
 import { UserCreateDto } from './user.dto'
 import { User } from './user.entity'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Part, PartType } from 'src/parts/part.entity'
+
+/**
+ * UserVoteStatus type.
+ */
+export type UserVoteStatus = Record<PartType, Part | undefined>
 
 /**
  * UserPublic type.
  */
-export type UserPublic = Omit<User, 'passwordHash'>
+export type UserPublic = Omit<User, 'passwordHash'> & {
+  status: UserVoteStatus
+}
 
 @Injectable()
 export class UsersService {
@@ -77,7 +85,33 @@ export class UsersService {
    */
   toPublic(user: User): UserPublic {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { passwordHash, ...data } = user
+    const { passwordHash, ...base } = user
+
+    const cpu = user.parts.find(({ type }) => type === 'cpu')
+    const motherboard = user.parts.find(({ type }) => type === 'motherboard')
+    const cpuCooler = user.parts.find(({ type }) => type === 'cpuCooler')
+    const pcCase = user.parts.find(({ type }) => type === 'pcCase')
+    const pcCooler = user.parts.find(({ type }) => type === 'pcCooler')
+    const gpu = user.parts.find(({ type }) => type === 'gpu')
+    const rom = user.parts.find(({ type }) => type === 'rom')
+    const ram = user.parts.find(({ type }) => type === 'ram')
+    const powerSupply = user.parts.find(({ type }) => type === 'powerSupply')
+
+    const data: UserPublic = {
+      ...base,
+      status: {
+        cpu,
+        motherboard,
+        cpuCooler,
+        pcCase,
+        pcCooler,
+        gpu,
+        rom,
+        ram,
+        powerSupply,
+      },
+    }
+
     return data
   }
 }
