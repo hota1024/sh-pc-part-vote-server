@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { PartCreateDto } from './part.dto'
 import { Part, PartType } from './part.entity'
 
 /**
@@ -16,6 +17,17 @@ export type PartPublic = {
 export class PartsService {
   @InjectRepository(Part)
   private readonly partsRepo: Repository<Part>
+
+  /**
+   * create part and returns it.
+   *
+   * @param data data.
+   */
+  create(data: PartCreateDto): Promise<Part> {
+    const part = this.partsRepo.create(data)
+
+    return this.partsRepo.save(part)
+  }
 
   /**
    * returns all public parts.
