@@ -8,6 +8,7 @@ import { Part, PartType } from './part.entity'
  * PartPublic type.
  */
 export type PartPublic = {
+  id: string
   name: string
   type: PartType
   votes: number
@@ -54,6 +55,7 @@ export class PartsService {
    */
   toPublic(part: Part): PartPublic {
     return {
+      id: part.id,
       name: part.name,
       type: part.type,
       votes: part.users?.length ?? 0,
