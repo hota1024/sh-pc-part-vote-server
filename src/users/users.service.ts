@@ -1,7 +1,9 @@
+import * as bcrypt from 'bcrypt'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { UserCreateDto } from './user.dto'
 import { User } from './user.entity'
+import { InjectRepository } from '@nestjs/typeorm'
 
 /**
  * UserPublic type.
@@ -10,6 +12,7 @@ export type UserPublic = Omit<User, 'passwordHash'>
 
 @Injectable()
 export class UsersService {
+  @InjectRepository(User)
   private readonly usersRepo: Repository<User>
 
   /**
@@ -46,7 +49,12 @@ export class UsersService {
       })
     }
 
-    const user = this.usersRepo.create(data)
+    const salt = bcrypt.genSaltSync(10)
+
+    const user = this.usersRepo.create({
+      email: data.email,
+      passwordHash: bcrypt.hashSync(data.password, salt),
+    })
 
     return this.usersRepo.save(user)
   }
@@ -59,7 +67,7 @@ export class UsersService {
   async validateEmail(email: string): Promise<boolean> {
     const user = await this.usersRepo.findOne({ email })
 
-    return !!user
+    return !user
   }
 
   /**

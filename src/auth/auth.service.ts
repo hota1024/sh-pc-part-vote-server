@@ -7,8 +7,10 @@ import { LoginDto } from './auth.dto'
 
 @Injectable()
 export class AuthService {
-  private readonly usersService: UsersService
-  private readonly jwtService: JwtService
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
+  ) {}
 
   /**
    * validate credentials and returns the user public.
@@ -34,7 +36,8 @@ export class AuthService {
    */
   async login(credentials: LoginDto): Promise<string> {
     const user = await this.usersService.findByEmail(credentials.email)
+    const userPublic = this.usersService.toPublic(user)
 
-    return this.jwtService.sign(user)
+    return this.jwtService.sign(userPublic)
   }
 }
