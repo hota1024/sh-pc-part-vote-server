@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { UserCreateDto } from './user.dto'
@@ -46,7 +47,12 @@ export class UsersService {
       })
     }
 
-    const user = this.usersRepo.create(data)
+    const salt = bcrypt.genSaltSync(10)
+
+    const user = this.usersRepo.create({
+      email: data.email,
+      passwordHash: bcrypt.hashSync(data.password, salt),
+    })
 
     return this.usersRepo.save(user)
   }
