@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { UserCreateDto } from './user.dto'
 import { User } from './user.entity'
@@ -37,7 +37,15 @@ export class UsersService {
    *
    * @param data data.
    */
-  create(data: UserCreateDto): Promise<User> {
+  async create(data: UserCreateDto): Promise<User> {
+    const isEmailValid = await this.validateEmail(data.email)
+
+    if (!isEmailValid) {
+      throw new BadRequestException({
+        message: 'このメールアドレスは既に使用されています。',
+      })
+    }
+
     const user = this.usersRepo.create(data)
 
     return this.usersRepo.save(user)
