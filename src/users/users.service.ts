@@ -66,8 +66,9 @@ export class UsersService {
    */
   async validateEmail(email: string): Promise<boolean> {
     const user = await this.usersRepo.findOne({ email })
+    console.log(user)
 
-    return !!user
+    return !user
   }
 
   /**
