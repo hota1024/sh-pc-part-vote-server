@@ -14,12 +14,12 @@ export class User {
   /**
    * email.
    */
-  @Column('string')
+  @Column()
   email: string
 
   /**
    * password string that hashed by bcrypt.
    */
-  @Column('string')
+  @Column()
   passwordHash: string
 }
