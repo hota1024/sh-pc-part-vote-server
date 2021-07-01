@@ -87,15 +87,15 @@ export class UsersService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...base } = user
 
-    const cpu = user.parts.find(({ type }) => type === 'cpu')
-    const motherboard = user.parts.find(({ type }) => type === 'motherboard')
-    const cpuCooler = user.parts.find(({ type }) => type === 'cpuCooler')
-    const pcCase = user.parts.find(({ type }) => type === 'pcCase')
-    const pcCooler = user.parts.find(({ type }) => type === 'pcCooler')
-    const gpu = user.parts.find(({ type }) => type === 'gpu')
-    const rom = user.parts.find(({ type }) => type === 'rom')
-    const ram = user.parts.find(({ type }) => type === 'ram')
-    const powerSupply = user.parts.find(({ type }) => type === 'powerSupply')
+    const cpu = user.parts?.find(({ type }) => type === 'cpu')
+    const motherboard = user.parts?.find(({ type }) => type === 'motherboard')
+    const cpuCooler = user.parts?.find(({ type }) => type === 'cpuCooler')
+    const pcCase = user.parts?.find(({ type }) => type === 'pcCase')
+    const pcCooler = user.parts?.find(({ type }) => type === 'pcCooler')
+    const gpu = user.parts?.find(({ type }) => type === 'gpu')
+    const rom = user.parts?.find(({ type }) => type === 'rom')
+    const ram = user.parts?.find(({ type }) => type === 'ram')
+    const powerSupply = user.parts?.find(({ type }) => type === 'powerSupply')
 
     const data: UserPublic = {
       ...base,
