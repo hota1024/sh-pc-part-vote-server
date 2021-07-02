@@ -29,7 +29,7 @@ export class UsersService {
    * @param id user id.
    */
   findById(id: User['id']): Promise<User> {
-    return this.usersRepo.findOne(id)
+    return this.usersRepo.findOne(id, { relations: ['parts'] })
   }
 
   /**
