@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { UserPublic } from 'src/users/users.service'
-import { PartCreateDto } from './part.dto'
+import { PartBulkCreateDto, PartCreateDto } from './part.dto'
 import { Part, PartType, PartTypes } from './part.entity'
 import { PartPublic, PartsService, VoteStatus } from './parts.service'
 
@@ -47,6 +47,16 @@ export class PartsController {
     this.checkAuthorization(authorization)
 
     return this.parts.create(data)
+  }
+
+  @Post('/bulk')
+  bulkCreate(
+    @Body() data: PartBulkCreateDto,
+    @Headers('Authorization') authorization?: string
+  ): Promise<Part[]> {
+    this.checkAuthorization(authorization)
+
+    return this.parts.bulkCreate(data)
   }
 
   @Get('status')
