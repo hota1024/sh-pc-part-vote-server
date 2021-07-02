@@ -12,3 +12,14 @@ export class PartCreateDto {
   @IsNotEmpty()
   name: string
 }
+
+/**
+ * PartBuokCreateDto class.
+ */
+export class PartBulkCreateDto {
+  @IsNotEmpty()
+  @IsIn(PartTypes)
+  type: PartType
+
+  names: string[]
+}
