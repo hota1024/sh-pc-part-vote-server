@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/users/user.entity'
 import { UserPublic, UsersService } from 'src/users/users.service'
 import { Repository } from 'typeorm'
-import { PartCreateDto } from './part.dto'
+import { PartBulkCreateDto, PartCreateDto } from './part.dto'
 import { Part, PartType } from './part.entity'
 
 /**
@@ -42,6 +42,27 @@ export class PartsService {
     const part = this.partsRepo.create(data)
 
     return this.partsRepo.save(part)
+  }
+
+  /**
+   * bulk create parts.
+   *
+   * @param data data.
+   */
+  bulkCreate(data: PartBulkCreateDto): Promise<Part[]> {
+    const { names, type } = data
+    const parts: Part[] = []
+
+    for (const name of names) {
+      parts.push(
+        this.partsRepo.create({
+          type,
+          name,
+        })
+      )
+    }
+
+    return this.partsRepo.save(parts)
   }
 
   /**
